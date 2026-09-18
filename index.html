@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>IMRaD Writing Lab | Shared student activity</title>
+<style>
+:root{font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.5;color:#1d1d1d;background:#fff}*{box-sizing:border-box}body{margin:0}main{max-width:1060px;margin:25px auto 65px;padding:0 18px}h1{font-size:1.65rem;margin:0}h2{font-size:1.25rem;margin:12px 0}h3{font-size:1.03rem;margin:20px 0 7px}p{margin:7px 0 12px}.small{font-size:.89rem;color:#515151}.top{padding-bottom:14px;border-bottom:1px solid #bdbdbd}.tag{display:inline-block;border:1px solid #777;padding:3px 8px;border-radius:3px;font-size:.82rem}.warning{border:1px solid #777;background:#f7f7f7;padding:12px;margin:16px 0}.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:18px 0}.slot{border:1px solid #999;border-radius:3px;padding:12px;min-height:118px}.slot h2{font-size:1.04rem;margin:0 0 5px}.slot p{font-size:.87rem;margin:5px 0}.slot button{margin-top:7px;width:100%}.slot.mine{border:2px solid #222;padding:11px}.slot.active{background:#f6f6f6}.shell{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(245px,1fr);gap:26px;align-items:start}.workspace{min-width:0}.peer{position:sticky;top:12px;border-left:1px solid #bbb;padding-left:19px;max-height:calc(100vh - 25px);overflow:auto}.peer h2{font-size:1.1rem}.peer-entry{border-top:1px solid #ddd;padding:10px 0}.peer-entry h3{margin:2px 0 6px}.peer-answer{white-space:pre-wrap;overflow-wrap:anywhere;margin:4px 0 11px}.muted{color:#666}.tabs{display:flex;flex-wrap:wrap;gap:5px;margin:16px 0;border-bottom:1px solid #bbb;padding-bottom:10px}button{font:inherit;border:1px solid #777;color:#111;background:#fff;padding:8px 11px;border-radius:3px;cursor:pointer}button:hover{background:#f0f0f0}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #222;outline-offset:2px}button:disabled{opacity:.4;cursor:not-allowed}button.primary,button.selected{background:#242424;color:#fff}.flow{list-style:none;padding:0;margin:14px 0}.card{display:flex;align-items:center;gap:8px;border:1px solid #aaa;padding:9px 8px;margin:7px 0;min-height:59px;background:#fff;border-radius:3px}.card.dragging{opacity:.45}.handle{cursor:grab;touch-action:none;font-weight:700;font-size:1.2rem}.letter{font-weight:bold;min-width:20px}.card-text{flex:1;font-size:.93rem}.arrows{display:flex;flex-direction:column;gap:4px}.arrows button{padding:3px 9px;font-size:.85rem}.moves{font-size:.91rem;color:#444}.patterns{display:grid;gap:6px;margin:12px 0}.pattern{display:flex;gap:9px;align-items:flex-start;border:1px solid #aaa;padding:10px;cursor:pointer}.pattern:has(input:checked){border:2px solid #222;padding:9px}.pattern input{margin-top:6px;accent-color:#222}.question{display:block;font-weight:bold;margin:14px 0 3px}textarea{width:100%;resize:vertical;min-height:85px;border:1px solid #888;border-radius:3px;padding:10px;font:inherit}.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:13px 0}.feedback,.model{border:1px solid #ccc;background:#f9f9f9;padding:10px;margin:11px 0}.model[hidden],.feedback[hidden],[hidden]{display:none!important}.model p{white-space:pre-wrap}.section-foot{border-top:1px solid #bbb;margin-top:20px;padding-top:13px;display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap}.footer{border-top:1px solid #bbb;padding-top:15px;margin-top:27px}.status{font-size:.9rem;min-height:1.4em}.ghost{position:fixed;background:white;border:2px solid #333;padding:10px;pointer-events:none;z-index:99;opacity:.92;box-shadow:0 3px 13px #0002;max-width:70vw}.readbox{border:1px solid #ccc;padding:13px;margin:9px 0;white-space:pre-wrap;overflow-wrap:anywhere}.citation{margin:27px 0;font-size:.81rem;color:#555}.section-label{margin-left:auto;font-size:.84rem;color:#555}a{color:#222} @media(max-width:780px){.board{grid-template-columns:repeat(2,minmax(0,1fr))}.shell{grid-template-columns:1fr}.peer{position:static;max-height:none;border-left:0;border-top:1px solid #bbb;padding:17px 0}}@media(max-width:480px){main{padding:0 11px}.board{gap:6px}.slot{padding:8px}.slot p{font-size:.79rem}.card{gap:5px;padding:8px 5px}.arrows button{padding:4px 6px}.card-text{font-size:.88rem}}
+</style>
+</head>
+<body>
+<main>
+<header class="top"><h1>IMRaD writing lab</h1><p class="small">One shared website · 60 minutes · Work independently and see classmates' answers</p><p id="mode" class="tag" role="status">Loading…</p></header>
+<div id="banner" class="warning" hidden></div>
+<p><strong>Choose your numbered workspace.</strong> Arrange the cards, explain their order, and write one sentence for each section. Your classmates' work appears on the right or below. Work only in your own space.</p>
+<div id="board" class="board" aria-label="Student workspaces"></div>
+<div class="actions"><button id="more-seats" type="button">+ Add one student workspace</button><span id="seat-count" class="small" aria-live="polite">Showing 4 workspaces</span></div>
+<div class="shell">
+  <section class="workspace" id="workspace"><p class="small">Select a workspace above to begin.</p></section>
+  <aside class="peer" aria-label="Classmates' work"><h2>Classmates' answers</h2><div id="peers"><p class="small">Answers appear as students work.</p></div></aside>
+</div>
+<div class="footer"><button id="export" type="button">Export class responses (.csv)</button> <span id="global-status" class="status" role="status" aria-live="polite"></span><p class="small">The export includes claimed student workspaces and submission times. This activity does not send grades to Canvas.</p></div>
+<p class="citation">Source study: Hjetland et al. (2021), <i>Frontiers in Public Health</i>, 9, 794307. <a href="https://doi.org/10.3389/fpubh.2021.794307" target="_blank" rel="noopener noreferrer">Article DOI</a>. All classroom statements and sample sentences are original paraphrases. The cross-sectional findings do not establish causation.</p>
+</main>
+<script src="firebase-config.js"></script>
+<script>
+'use strict';
+const units=[
+ {title:'Introduction',time:'0–15 min',moves:['Research problem','Existing evidence','Research gap','Study aim'],cards:[
+  {id:'A',text:'The study aimed to examine associations of total and evening screen time with sleep quantity and quality among students.'},
+  {id:'B',text:'Sleep problems are common among students and can have negative consequences.'},
+  {id:'C',text:'Earlier research often focused on children and adolescents and on sleep duration rather than other sleep outcomes.'},
+  {id:'D',text:'Research has linked greater screen time with shorter or poorer sleep.'}],
+  order:['B','D','C','A'],rationale:'The problem establishes why the topic matters. Existing evidence establishes what is known. The gap identifies what remains insufficiently examined, which makes the study aim meaningful.',
+  question:'Why does the research gap come before the study aim?',
+  patterns:['Although [what previous research shows], [what remains uncertain].','Most research has focused on [population or outcome], whereas less is known about [different population or outcome].','Previous studies have examined [X]; however, [specific gap] remains.'],
+  sentencePrompt:'Using statements C and D, write ONE research-gap sentence with your chosen structure. Make the missing knowledge explicit. For structure 1, put it in the main clause.',
+  sentenceCheck:'Underline the part expressing the research gap. Is every claim supported by the cards?',
+  modelSentences:[
+   'Although previous research has linked greater screen time with shorter or poorer sleep, research involving university students and sleep outcomes beyond duration has received less attention.',
+   'Most research on screen time and sleep has focused on children and adolescents and on sleep duration, whereas less is known about other sleep outcomes among university students.',
+   'Previous studies have examined associations between screen time and sleep; however, evidence concerning university students and sleep outcomes beyond duration remains relatively limited.']},
+ {title:'Methods',time:'15–29 min',moves:['Study design and participants','Measurements','Exclusions and analyzed sample','Analysis'],cards:[
+  {id:'A',text:'After excluding incomplete or implausible records, 49,051 students remained in the analysis.'},
+  {id:'B',text:'The researchers measured screen use and sleep using questionnaire responses and derived sleep outcomes.'},
+  {id:'C',text:'Regression models were used to examine associations between screen variables and sleep outcomes.'},
+  {id:'D',text:'A national survey of Norwegian college and university students was conducted in 2018.'}],
+  order:['D','B','A','C'],rationale:'Introduce the survey, explain the measurements, define which records were included, then describe the analyses. This is a simplified Methods flow, not the only possible organization.',
+  question:'Why should the reader know which records were included before the analysis is described?',
+  patterns:['A [study design] survey was conducted among [population] in [year], and [N] students were included in the analysis.','In [year], researchers surveyed [population]; [N] responses were included in the analysis.','The analysis included [N] students from a [year] [study design] survey of [population].'],
+  sentencePrompt:'Using statements A and D, write ONE sentence stating the study design, year and analyzed sample. Use past tense.',
+  sentenceCheck:'Does the sentence describe the study rather than a finding? Does it distinguish surveyed students from those analyzed?',
+  modelSentences:[
+   'A cross-sectional national survey was conducted among Norwegian college and university students in 2018, and 49,051 students were included in the analysis.',
+   'In 2018, researchers surveyed Norwegian college and university students; 49,051 students were included in the analysis.',
+   'The analysis included 49,051 students from a 2018 cross-sectional national survey of Norwegian college and university students.']},
+ {title:'Results',time:'29–43 min',moves:['Participant characteristics','Descriptive finding','Main comparison','Additional outcome'],cards:[
+  {id:'A',text:'The proportion meeting insomnia criteria was greater in the highest evening screen-time group than in the lowest.'},
+  {id:'B',text:'Mean sleep duration was shorter in the highest evening screen-time group.'},
+  {id:'C',text:'The analyzed students had a median age of 22 years.'},
+  {id:'D',text:'Checking social media was the most common reported in-bed screen activity.'}],
+  order:['C','D','B','A'],rationale:'Introduce who was measured, give descriptive context, then report the main sleep-duration comparison and a further sleep outcome. Other orders may be defensible when clearly explained.',
+  question:'Why should participant characteristics appear before the outcome comparisons?',
+  patterns:['Mean [outcome] was [higher/lower] in [group] than in [comparison group] ([value] vs. [value]).','[Group A] had a mean [outcome] of [value], compared with [value] in [Group B].','Mean [outcome] differed between [Group A] and [Group B] ([value] vs. [value]).'],
+  data:'For your sentence: lowest fifth of evening screen time, mean sleep duration = 7 h 40 min; highest fifth, mean sleep duration = 7 h 3 min.',
+  sentencePrompt:'Write ONE sentence comparing sleep duration in the lowest and highest evening screen-time groups. Include both values.',
+  sentenceCheck:'Include the outcome, direction, both groups and both values. Do not invent a p-value or claim causation.',
+  modelSentences:[
+   'Mean sleep duration was lower in the highest fifth of evening screen time than in the lowest fifth (7 h 3 min vs. 7 h 40 min).',
+   'Students in the highest evening screen-time fifth had a mean sleep duration of 7 h 3 min, compared with 7 h 40 min in the lowest fifth.',
+   'Mean sleep duration differed between the highest and lowest evening screen-time fifths (7 h 3 min vs. 7 h 40 min, respectively), with the shorter duration in the highest fifth.']},
+ {title:'Discussion',time:'43–57 min',moves:['Main finding','Comparison and interpretation','Alternative evidence','Limitations'],cards:[
+  {id:'A',text:'Other studies suggest that sleep difficulties might precede screen use rather than the reverse.'},
+  {id:'B',text:'The cross-sectional design and self-reported measures limit interpretation.'},
+  {id:'C',text:'Screen time was associated with sleep outcomes, particularly when screens were used in bed.'},
+  {id:'D',text:'The authors compare the findings with earlier research and consider possible interpretations.'}],
+  order:['C','D','A','B'],rationale:'Restate the finding, relate it to existing research, consider evidence pointing in another direction, then state what the design and measurement limitations permit us to conclude.',
+  question:'Why does the Discussion consider alternative evidence before discussing limitations?',
+  patterns:['Although [observed finding], [what the design cannot establish].','The association between [X] and [Y] should be interpreted cautiously because [study limitation].','Because [design limitation], it remains unclear whether [X preceded Y or the reverse], despite the observed association.'],
+  sentencePrompt:'Using statements B and C, write ONE cautious sentence that presents the finding and emphasizes a limitation.',
+  sentenceCheck:'Does your sentence distinguish association from causation and avoid assuming which variable came first?',
+  modelSentences:[
+   'Although screen time was associated with sleep outcomes, the cross-sectional design cannot establish whether screen use preceded sleep difficulties.',
+   'The association between screen time and sleep outcomes should be interpreted cautiously because the study relied on cross-sectional, self-reported data.',
+   'Because students were surveyed once, it remains unclear whether screen use preceded sleep difficulties or the reverse, despite the observed association.']}
+];
+
+const MAX_SLOTS=8;
+const SLOT_IDS=Array.from({length:MAX_SLOTS},(_,i)=>'student'+(i+1));
+let visibleSeats=4;
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fresh=()=>units.map(u=>({order:u.cards.map(c=>c.id),checked:false,why:'',pattern:'',sentence:''}));
+const countDone=sections=>Array.isArray(sections)?sections.filter(s=>s.checked&&String(s.why||'').trim()&&s.pattern&&String(s.sentence||'').trim()).length:0;
+const normalize=s=>Array.isArray(s)&&s.length===4?s.map((v,i)=>({order:Array.isArray(v.order)&&v.order.length===4?v.order.slice():fresh()[i].order,checked:!!v.checked,why:String(v.why||''),pattern:String(v.pattern||''),sentence:String(v.sentence||'')})):fresh();
+const copy=v=>JSON.parse(JSON.stringify(v));
+let demo=false,db=null,auth=null,fire=null,uid=null,active=-1,current=0,working=null,slots=Array(MAX_SLOTS).fill(null),review=false,peerSection=0,saveTimer=null,writeQueue=Promise.resolve(),submitted=false;
+const docRef=i=>fire.doc(db,'workspaces',SLOT_IDS[i]);
+function setStatus(s){$('global-status').textContent=s}
+function stamp(x){if(!x)return 'Not submitted';let d=x.toDate?x.toDate():new Date(x);return Number.isNaN(d.getTime())?'Time pending':d.toLocaleString()}
+function showError(e){setStatus('Error: '+(e?.message||String(e))+' Check the Firebase setup and database rules.');console.error(e)}
+function savePreview(){try{localStorage.setItem('imrad-shared-workspaces-v3',JSON.stringify(slots))}catch(e){setStatus('Local demo storage unavailable.')}}
+function startDemo(){demo=true;try{const raw=JSON.parse(localStorage.getItem('imrad-shared-workspaces-v3')||'null');if(Array.isArray(raw))slots=Array.from({length:MAX_SLOTS},(_,i)=>raw[i]||null)}catch(e){}$('mode').textContent='Preview mode · This browser only';$('banner').hidden=false;$('banner').textContent='Preview only: answers here are NOT shared between browsers or recorded online. Publish with Firebase before inviting students.';renderOverview();renderPeers();}
+async function startOnline(config){
+ try{
+  const [appMod,authMod,dbMod]=await Promise.all([import('https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js'),import('https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js')]);
+  fire={...dbMod};const app=appMod.initializeApp(config);auth=authMod.getAuth(app);db=dbMod.getFirestore(app);
+  await authMod.signInAnonymously(auth);uid=auth.currentUser.uid;
+  $('mode').textContent='Connected · Shared live activity';$('banner').hidden=true;
+  SLOT_IDS.forEach((slot,i)=>dbMod.onSnapshot(docRef(i),snap=>{
+   slots[i]=snap.exists()?snap.data():null;
+   if(slots[i]?.ownerUid===uid&&active<0){active=i;working=normalize(slots[i].sections);submitted=slots[i].status==='submitted';renderEditor()}
+   if(i===active&&slots[i]?.status==='submitted'&&!submitted){submitted=true;clearTimeout(saveTimer);renderEditor()}
+   renderOverview();renderPeers();
+  },showError));
+  setStatus('Connected. Select an available student workspace.');
+ }catch(e){$('mode').textContent='Connection problem';$('banner').hidden=false;$('banner').textContent='The shared app could not connect. Check your Firebase configuration, Anonymous Authentication, Firestore database and rules. No online submission has been made.';showError(e)}
+}
+function renderOverview(){
+ // Always start at four; do not expand based on old saved or claimed workspaces.
+ // If this browser already owns a higher-numbered space, reveal it so the owner can resume.
+ if(active>=visibleSeats)visibleSeats=Math.min(MAX_SLOTS,active+1);
+ $('seat-count').textContent='Showing '+visibleSeats+' workspaces (up to '+MAX_SLOTS+' supported)';
+ $('more-seats').disabled=visibleSeats>=MAX_SLOTS;
+ $('more-seats').textContent=visibleSeats>=MAX_SLOTS?'All 8 workspaces shown':'+ Add one student workspace';
+ $('board').innerHTML=SLOT_IDS.slice(0,visibleSeats).map((s,i)=>{const d=slots[i],mine=demo||Boolean(uid&&d?.ownerUid===uid),isMine=Boolean(uid&&d?.ownerUid===uid);let label=d?(d.status==='submitted'?'Submitted':countDone(d.sections)+'/4 sections drafted'):'Available';let action=demo?(active===i?'My workspace':'Work here'):!d?'Claim workspace':isMine?(active===i?'My workspace':'Open my work'):'View answers';return `<div class="slot ${active===i?'active ':''}${isMine?'mine':''}"><h2>Student ${i+1}</h2><p>${esc(label)}</p><button type="button" data-slot="${i}" ${active===i?'disabled':''}>${esc(action)}</button></div>`}).join('');
+ $('board').querySelectorAll('[data-slot]').forEach(b=>b.addEventListener('click',()=>choose(Number(b.dataset.slot))));
+}
+async function choose(i){
+ if(demo){if(!slots[i])slots[i]={ownerUid:'demo-'+SLOT_IDS[i],sections:fresh(),status:'draft',claimedAt:new Date().toISOString(),submittedAt:null};active=i;working=normalize(slots[i].sections);submitted=slots[i].status==='submitted';review=false;current=0;savePreview();renderOverview();renderEditor();renderPeers();return}
+ if(!uid){setStatus('Wait for the connection to finish.');return}
+ const d=slots[i];if(d&&d.ownerUid!==uid){active=-1;working=null;renderReadOnly(i);renderOverview();return}
+ if(slots.some((v,j)=>j!==i&&v?.ownerUid===uid)){setStatus('You already claimed another student workspace. Open your own space above.');return}
+ try{
+  setStatus('Opening your workspace…');
+  const result=await fire.runTransaction(db,async tx=>{
+   const ref=docRef(i),snap=await tx.get(ref);
+   if(snap.exists()){const data=snap.data();if(data.ownerUid!==uid)throw new Error('This workspace has already been claimed by another browser.');return data}
+   const data={ownerUid:uid,sections:fresh(),status:'draft',claimedAt:fire.serverTimestamp(),updatedAt:fire.serverTimestamp(),submittedAt:null};tx.set(ref,data);return {...data,sections:fresh()};
+  });
+  active=i;current=0;working=normalize(result.sections);submitted=result.status==='submitted';review=false;renderOverview();renderEditor();renderPeers();setStatus('Workspace ready. Your work saves automatically.');
+ }catch(e){showError(e);renderOverview()}
+}
+function renderReadOnly(i){let d=slots[i];$('workspace').innerHTML=`<h2>Student ${i+1} · View only</h2><p class="small">You cannot edit this workspace. Use your own workspace to complete the activity.</p>${d?readSections(d):'<p>No work yet.</p>'}`;renderPeers();}
+function readSections(d){return units.map((u,k)=>{let s=d.sections?.[k];if(!s)return '';return `<div class="readbox"><strong>${k+1}. ${esc(u.title)}</strong><p><strong>Card order:</strong> ${esc((s.order||[]).join(' → '))}</p><p><strong>Why this order:</strong><br>${esc(s.why||'Not yet answered')}</p><p><strong>Sentence structure:</strong> ${esc(s.pattern||'Not selected')}</p><p><strong>Sentence:</strong><br>${esc(s.sentence||'Not yet written')}</p></div>`}).join('')}
+function renderPeers(){const other=SLOT_IDS.slice(0,visibleSeats).map((s,i)=>({i,d:slots[i]})).filter(({i,d})=>i!==active&&d);$('peers').innerHTML=other.length?other.map(({i,d})=>`<div class="peer-entry"><h3>Student ${i+1} · ${!d?'Not started':d.status==='submitted'?'Submitted':countDone(d.sections)+'/4 drafted'}</h3>${d?`<p class="small">Card order (${esc(units[peerSection].title)}): ${esc((d.sections?.[peerSection]?.order||[]).join(' → '))}</p><p class="small">Their explanation:</p><p class="peer-answer">${esc(d.sections?.[peerSection]?.why||'Not yet answered')}</p><p class="small">Their sentence:</p><p class="peer-answer">${esc(d.sections?.[peerSection]?.sentence||'Not yet written')}</p>`:'<p class="small">Waiting for this student.</p>'}</div>`).join(''):'<p class="small">Other students&#39; answers will appear here after they claim a workspace.</p>';}
+function renderEditor(){
+ if(active<0||!working)return;peerSection=current;$('workspace').innerHTML=`<h2>Student ${active+1} · ${submitted?'Submitted':'My workspace'}</h2><p id="save-status" class="small">${submitted?'Submitted '+stamp(slots[active]?.submittedAt):'Your answers save as you work.'}</p><div class="tabs" id="tabs">${units.map((u,i)=>`<button type="button" data-unit="${i}" class="${i===current?'selected':''}">${i+1}. ${esc(u.title)}${countDone([working[i]])?' ✓':''}</button>`).join('')}</div><div id="unit-content"></div><div class="footer"><p><strong>Progress:</strong> <span id="progress">${countDone(working)}/4 sections completed</span></p><div class="actions"><button id="review" type="button" ${submitted||countDone(working)<4?'disabled':''}>${review?'Hide model answers':'Review model answers'}</button><button id="submit" type="button" class="primary" ${submitted?'disabled':''}>${submitted?'Submitted':'Submit all four sections'}</button></div><p class="small">Submitting saves a final record and locks this workspace. Model answers can be reviewed before submitting, once all sections are drafted.</p></div>`;
+ $('tabs').querySelectorAll('[data-unit]').forEach(b=>b.addEventListener('click',()=>{current=Number(b.dataset.unit);renderEditor();renderPeers()}));
+ $('review').addEventListener('click',()=>{review=!review;renderEditor()});$('submit').addEventListener('click',submitAll);renderUnit();renderOverview();renderPeers();
+}
+function renderUnit(){
+ const u=units[current],s=working[current],locked=submitted;
+ $('unit-content').innerHTML=`<h3>${current+1}. ${esc(u.title)}</h3><p>Drag the cards into reading order, or use the arrow buttons.</p><p class="moves">Section flow: ${u.moves.map(esc).join(' → ')}</p><ol id="flow" class="flow"></ol><div class="actions"><button id="check-order" ${locked?'disabled':''}>Check my order</button><span id="order-feedback" class="small" aria-live="polite">${s.checked?'Order checked. Explain your choice below.':''}</span></div><label class="question" for="why">${esc(u.question)}</label><textarea id="why" ${locked?'disabled':''} placeholder="Write your own explanation.">${esc(s.why)}</textarea><h3>Construct a sentence</h3><p>Choose ONE sentence structure and write an original sentence about the screen-time study.</p><div id="patterns" class="patterns">${u.patterns.map((p,i)=>`<label class="pattern"><input type="radio" name="pattern" value="${i+1}" ${s.pattern===String(i+1)?'checked':''} ${locked?'disabled':''}><span>${i+1}. ${esc(p)}</span></label>`).join('')}</div>${u.data?`<p><strong>${esc(u.data)}</strong></p>`:''}<label class="question" for="sentence">${esc(u.sentencePrompt)}</label><textarea id="sentence" ${locked?'disabled':''} placeholder="Write your sentence.">${esc(s.sentence)}</textarea><p class="small"><strong>Self-check:</strong> ${esc(u.sentenceCheck)}</p>${review||submitted?`<div class="model"><strong>Suggested flow: ${u.order.join(' → ')}</strong><p>${esc(u.rationale)}</p><p><strong>Model sentence for your selected structure:</strong></p><p>${esc(s.pattern?u.modelSentences[Number(s.pattern)-1]:'Select a sentence structure to see its matching model.')}</p><p class="small">One possible construction; other accurate sentences are acceptable.</p></div>`:''}<div class="section-foot"><button id="prev" ${current===0?'disabled':''}>← Previous</button><span class="small">Section ${current+1} of 4</span><button id="next" ${current===3?'disabled':''}>Next →</button></div>`;
+ renderCards();$('prev').addEventListener('click',()=>{current--;renderEditor()});$('next').addEventListener('click',()=>{current++;renderEditor()});
+ if(locked)return;
+ $('check-order').addEventListener('click',()=>{s.checked=true;$('order-feedback').textContent=s.order.join('')===u.order.join('')?'Your order matches the suggested sequence.':'Your order differs from the suggested sequence. Explain your reasoning, then review it later.';changed()});
+ $('why').addEventListener('input',e=>{s.why=e.target.value;changed()});$('sentence').addEventListener('input',e=>{s.sentence=e.target.value;changed()});$('patterns').addEventListener('change',e=>{if(e.target.name==='pattern'){s.pattern=e.target.value;changed();if(review)renderUnit()}});
+ $('flow').addEventListener('click',e=>{let b=e.target.closest('[data-move]');if(!b)return;let id=b.closest('[data-card]').dataset.card,at=s.order.indexOf(id),to=at+(b.dataset.move==='up'?-1:1);if(to<0||to>3)return;[s.order[at],s.order[to]]=[s.order[to],s.order[at]];s.checked=false;renderCards();$('order-feedback').textContent='Order changed. Check it again.';changed()});
+}
+function renderCards(){
+ const u=units[current],s=working[current],flow=$('flow');flow.innerHTML=s.order.map((id,i)=>{const c=u.cards.find(x=>x.id===id);return `<li class="card" data-card="${id}" draggable="${!submitted}"><span class="handle" title="Drag this card" role="img" aria-label="Drag card">⋮⋮</span><span class="letter">${id}.</span><span class="card-text">${esc(c.text)}</span><span class="arrows"><button aria-label="Move ${id} up" data-move="up" ${i===0||submitted?'disabled':''}>↑</button><button aria-label="Move ${id} down" data-move="down" ${i===3||submitted?'disabled':''}>↓</button></span></li>`}).join('');if(submitted)return;
+ let dragging=null;
+ const sync=()=>{const n=Array.from(flow.children).map(x=>x.dataset.card);if(n.join('')!==s.order.join('')){s.order=n;s.checked=false;$('order-feedback').textContent='Order changed. Check it again.';changed()}};
+ flow.querySelectorAll('.card').forEach(li=>{li.addEventListener('dragstart',e=>{dragging=li;e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',li.dataset.card);li.classList.add('dragging')});li.addEventListener('dragover',e=>{if(!dragging||dragging===li)return;e.preventDefault();let before=e.clientY<li.getBoundingClientRect().top+li.offsetHeight/2;flow.insertBefore(dragging,before?li:li.nextSibling)});li.addEventListener('drop',e=>{e.preventDefault();sync()});li.addEventListener('dragend',()=>{li.classList.remove('dragging');dragging=null;sync()});
+ const handle=li.querySelector('.handle');let touch=null;handle.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'||e.button!==0)return;touch={id:e.pointerId,startY:e.clientY,active:false,ghost:null};handle.setPointerCapture(e.pointerId);e.preventDefault()});handle.addEventListener('pointermove',e=>{if(!touch||touch.id!==e.pointerId)return;if(!touch.active&&Math.abs(e.clientY-touch.startY)>5){touch.active=true;touch.ghost=li.cloneNode(true);touch.ghost.className='ghost';touch.ghost.style.width=li.getBoundingClientRect().width+'px';document.body.append(touch.ghost);li.classList.add('dragging')}if(!touch.active)return;e.preventDefault();touch.ghost.style.left=Math.max(6,e.clientX-60)+'px';touch.ghost.style.top=Math.max(6,e.clientY-30)+'px';const target=document.elementFromPoint(e.clientX,e.clientY)?.closest('.card');if(target&&target!==li&&flow.contains(target))flow.insertBefore(li,e.clientY<target.getBoundingClientRect().top+target.offsetHeight/2?target:target.nextSibling)});const end=e=>{if(!touch||touch.id!==e.pointerId)return;if(touch.ghost)touch.ghost.remove();li.classList.remove('dragging');let did=touch.active;touch=null;if(did)sync()};handle.addEventListener('pointerup',end);handle.addEventListener('pointercancel',end);
+ });
+}
+function changed(){if(submitted)return;const n=countDone(working);if($('progress'))$('progress').textContent=n+'/4 sections completed';if($('review'))$('review').disabled=n<4;const tabs=$('tabs');if(tabs)tabs.querySelectorAll('[data-unit]').forEach((b,i)=>{b.textContent=(i+1)+'. '+units[i].title+(countDone([working[i]])?' ✓':'')});if(demo){slots[active].sections=copy(working);savePreview();renderOverview();renderPeers();$('save-status').textContent='Saved in this browser (preview only).';return}
+ $('save-status').textContent='Saving…';clearTimeout(saveTimer);saveTimer=setTimeout(()=>queueSave().catch(showError),850);
+}
+function queueSave(){if(demo)return Promise.resolve();const idx=active,payload=copy(working);writeQueue=writeQueue.catch(()=>{}).then(()=>fire.updateDoc(docRef(idx),{sections:payload,updatedAt:fire.serverTimestamp()}));writeQueue.then(()=>{if(active===idx&&!submitted&&$('save-status'))$('save-status').textContent='Saved online.'}).catch(showError);return writeQueue}
+async function submitAll(){if(submitted||active<0)return;if(countDone(working)<4){const missing=working.findIndex(s=>!s.checked||!s.why.trim()||!s.pattern||!s.sentence.trim());current=missing;renderEditor();setStatus('Finish all four sections before submitting.');return}if(!window.confirm('Submit your four sections now? Your responses will be locked.'))return;
+ const button=$('submit');button.disabled=true;setStatus('Submitting…');
+ try{if(demo){slots[active].sections=copy(working);slots[active].status='submitted';slots[active].submittedAt=new Date().toISOString();savePreview()}else{clearTimeout(saveTimer);await queueSave();await fire.updateDoc(docRef(active),{sections:copy(working),updatedAt:fire.serverTimestamp(),status:'submitted',submittedAt:fire.serverTimestamp()})}submitted=true;renderEditor();renderOverview();renderPeers();setStatus(demo?'Preview submission recorded only in this browser.':'Submitted successfully. Your final answers and submission time were recorded online.')}catch(e){button.disabled=false;showError(e)}
+}
+function exportCSV(){const head=['Workspace','Status','Submitted at','Section','Card order','Explanation','Selected structure','Sentence'];let rows=[head];slots.forEach((d,i)=>{if(!d)return;units.forEach((u,j)=>{let s=d?.sections?.[j]||{};rows.push([`Student ${i+1}`,d?.status||'Not started',d?.submittedAt?stamp(d.submittedAt):'',u.title,(s.order||[]).join(' → '),s.why||'',s.pattern||'',s.sentence||''])})});const safe=v=>{let s=String(v??'');if(/^[\s]*[=+@\-\t\r]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'};const csv='\ufeff'+rows.map(r=>r.map(safe).join(',')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='IMRaD_class_responses.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);setStatus('Class responses exported.');}
+$('export').addEventListener('click',exportCSV);$('more-seats').addEventListener('click',()=>{visibleSeats=Math.min(MAX_SLOTS,visibleSeats+1);renderOverview();renderPeers();});renderOverview();
+if(window.IMRAD_FIREBASE_CONFIG&&window.IMRAD_FIREBASE_CONFIG.apiKey)startOnline(window.IMRAD_FIREBASE_CONFIG);else startDemo();
+</script>
+</body>
+</html>
